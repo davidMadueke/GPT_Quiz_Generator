@@ -11,7 +11,6 @@ type Props = {
 const SignInButton = ({text}: Props) => {
   return (
     <Button 
-    variant="secondary" 
     className='hover:-translate-y-[1.5px] hover:ease-in-out'
     onClick={() => {
         signIn('google').catch(console.error)
