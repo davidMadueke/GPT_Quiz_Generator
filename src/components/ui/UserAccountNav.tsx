@@ -12,8 +12,9 @@ type Props = {
     user: Pick<User, "name" | "image" | "email">;
 }
 
-const UserAccountNav = ({user}: Props) => {
+const UserAccountNav = ({user}: Props ) => {
   return (
+    <div className=''>
     <DropdownMenu> 
         <DropdownMenuTrigger>
         <UserAvatar user={user} />
@@ -53,6 +54,7 @@ const UserAccountNav = ({user}: Props) => {
         </DropdownMenuContent>
 
     </DropdownMenu>
+    </div>
   )
 }
 
