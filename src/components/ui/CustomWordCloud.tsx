@@ -1,7 +1,16 @@
 "use client"
 import { useTheme } from 'next-themes'
 import React from 'react'
-import D3WordCloud from 'react-d3-cloud'
+
+/*import D3WordCloud from 'react-d3-cloud'*/ // This is  causing a Reference Error: documnet is not defined
+                                          // Used dynamic import to fix this                              
+import dynamic from 'next/dynamic'
+
+const D3WordCloud = dynamic(
+  () => import('react-d3-cloud'),
+  { ssr: false,
+    loading: () => <p>Loading...</p>}
+)
 
 type Props = {}
 
