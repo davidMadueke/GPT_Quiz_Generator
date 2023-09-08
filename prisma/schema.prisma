@@ -72,7 +72,7 @@ model Question{
   answerOptions Json? // Only for mcq
   isCorrect Boolean? // Only for mcq
   percentageCorrect Float? // Only for open ended
-  gameType Gametype
+  questionType Gametype
 
   game Game @relation(fields: [gameId], references: [id], onDelete: Cascade)
   @@index([gameId], name: "gameId")
