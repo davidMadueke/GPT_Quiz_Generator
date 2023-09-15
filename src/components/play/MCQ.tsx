@@ -11,7 +11,9 @@ import { z } from 'zod'
 import { checkAnswerSchema } from '@/schemas/quiz'
 import { useToast } from '../ui/use-toast'
 import Link from 'next/link'
-import { cn } from '@/lib/utils'
+import { cn, formatTimeDelta } from '@/lib/utils'
+import {differenceInSeconds} from 'date-fns'
+import { is } from 'date-fns/locale'
 
 type Props = {
     game: Game & {questions: Pick<Question, 'id'| 'answerOptions' | 'question'>[]}
@@ -27,6 +29,16 @@ const MCQ = ({ game }: Props) => {
     const [selectedOption, setSelectedOption] = React.useState<number>(0)
 
     const [isEnded, setIsEnded] = React.useState(false)
+
+    const [now, setNow] = React.useState<Date>(new Date())
+    React.useEffect(() => {
+        const interval = setInterval(() => {
+            if(!isEnded){ setNow(new Date()) }
+            }, 1000)
+            return () => {
+                clearInterval(interval)
+            }
+    }, [isEnded])
     
     const currentQuestion = React.useMemo(() => {
         return game.questions[questionIndex]
@@ -68,11 +80,12 @@ const MCQ = ({ game }: Props) => {
                         variant: 'destructive',
                     })
                 }
-                if (questionIndex === game.questions.length - 1) {
+                setQuestionIndex((prev) => prev + 1)
+
+                if (questionIndex === game.questions.length -1) {
                     setIsEnded(true) 
                     return
                 }
-                setQuestionIndex((prev) => prev + 1)
             }
         })
     }, [checkAnswer, toast, isChecking, questionIndex, game.questions.length])
@@ -101,9 +114,9 @@ const MCQ = ({ game }: Props) => {
 
     if(isEnded) {
         return (
-        <div className="absolute flex flex-col justify-center top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+        <div className="absolute flex flex-col justify-center top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0">
             <div className="px-4 mt-2 font-semibold text-white bg-green-500 rounded-md whitespace-nowrap">
-                You have completed this quiz in {'00:00'} minutes!
+                You have completed this quiz in {formatTimeDelta(differenceInSeconds(now, game.timeStarted))}!
             </div>
             <Link href={`/statistics/${game.id}`} className={cn(buttonVariants(), "mt-2")}>
             View Statistics
@@ -113,8 +126,9 @@ const MCQ = ({ game }: Props) => {
         )
     }
 
+
   return (
-    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 md:w-[80vw] max-4-xl w-[90vw]">
+    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 md:w-[80vw] max-4-xl w-[90vw] z-0">
         <div className="flex flex-row justify-between mb-2">
             {/* Topic */}
             <div className="flex flex-col">
@@ -124,7 +138,9 @@ const MCQ = ({ game }: Props) => {
             </p>
             <div className="flex self-start  text-slate-400 mt-2">
                 <Timer className='mr-2 '/>
-                <span>00:00</span>
+                <span>
+                    {formatTimeDelta(differenceInSeconds(now, game.timeStarted))}
+                </span>
             </div>
             </div>
 

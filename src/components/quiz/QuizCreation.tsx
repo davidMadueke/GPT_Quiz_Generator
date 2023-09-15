@@ -13,13 +13,19 @@ import { Separator } from '../ui/separator'
 import { useMutation } from '@tanstack/react-query'
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
+import LoadingQuestions from '../ui/LoadingQuestions'
+import { set } from 'date-fns'
 
-type Props = {}
+type Props = {
+    topicParam: string
+}
 
 type Input = z.infer<typeof quizCreationSchema>
 
-const QuizCreation = (props: Props) => {
+const QuizCreation = ({topicParam}: Props) => {
     const router = useRouter()
+    const [finishedLoading, setFinishedLoading] = React.useState(false)
+    const [showLoader, setShowLoader] = React.useState(false)
     const {mutate: getQuestions, isLoading} = useMutation({
         mutationFn: async ({amount, topic, type}: Input) => {
             const response = await axios.post('/api/game', {
@@ -34,31 +40,40 @@ const QuizCreation = (props: Props) => {
         resolver: zodResolver(quizCreationSchema),
         defaultValues: {
             amount: 3,
-            topic: "",
+            topic: topicParam,
             type: 'mcq',
         }
     })
     form.watch()
     function onSubmit(input: Input) {
+        setShowLoader(true)
         getQuestions({
             amount: input.amount,
             topic: input.topic,
             type: input.type
         }, {
             onSuccess: ({gameId}) => {
-                if(form.getValues('type') === 'mcq'){
-                    router.push(`/play/mcq/${gameId}`)
-                } else {
-                    router.push(`/play/open-ended/${gameId}`)
-                }
+                setFinishedLoading(true)
+                setTimeout(() => {
+                    if(form.getValues('type') === 'mcq'){
+                        router.push(`/play/mcq/${gameId}`)
+                    } else {
+                        router.push(`/play/open-ended/${gameId}`)
+                    }
+                },1000)
             },
             onError: (error) => {
                 console.log(error)
+                setShowLoader(false)
             }
         })
     }
+
+    if(showLoader){
+        return( <LoadingQuestions finishedLoading={finishedLoading}/>)
+    }
     return (
-        <div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'>
+        <div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2  z-0'>
             <Card>
                 <CardHeader>
                     <div className='flex flex-row items-center justify-between pb-2 space-y-0'>
@@ -142,6 +157,7 @@ const QuizCreation = (props: Props) => {
                 </CardContent>
             </Card>
         </div>
+
     )
 }
 
