@@ -5,6 +5,7 @@ import { Inter } from 'next/font/google'
 import Navbar from '@/components/ui/Navbar'
 import Providers from '@/components/Providers'
 import { Toaster } from '@/components/ui/toaster'
+import { ThemeToggle } from '@/components/ui/ThemeToggle'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -25,9 +26,10 @@ export default function RootLayout({
       }
       suppressHydrationWarning={true}>
         <Providers>
+        <div className='min-h-screen relative '>
         <Navbar />
         {children}
-
+        </div>
         <Toaster />
         </Providers>
       </body>

@@ -73,7 +73,8 @@ const QuizCreation = ({topicParam}: Props) => {
         return( <LoadingQuestions finishedLoading={finishedLoading}/>)
     }
     return (
-        <div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2  z-0'>
+        <div className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-0'>
+            <div>
             <Card>
                 <CardHeader>
                     <div className='flex flex-row items-center justify-between pb-2 space-y-0'>
@@ -156,6 +157,7 @@ const QuizCreation = ({topicParam}: Props) => {
 
                 </CardContent>
             </Card>
+            </div>
         </div>
 
     )

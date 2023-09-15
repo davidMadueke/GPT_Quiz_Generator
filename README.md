@@ -4,3 +4,4 @@ An interactive Quiz Web app that users generate, share and save quizzes by utili
 ### Todos
 
 - [ ] Upgrade to OpenAI SDK v4
+- [ ] Figure using absolute centering with the dropdown shadcn ui component
