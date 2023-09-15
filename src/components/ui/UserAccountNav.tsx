@@ -1,8 +1,13 @@
 "use client"
 import { User } from 'next-auth'
 import React from 'react'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuSeparator, DropdownMenuTrigger } from './dropdown-menu';
-import { DropdownMenuItem } from '@radix-ui/react-dropdown-menu';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+  } from "@/components/ui/dropdown-menu";
 import Link from 'next/link';
 import { signOut } from 'next-auth/react';
 import { LogOut } from 'lucide-react';

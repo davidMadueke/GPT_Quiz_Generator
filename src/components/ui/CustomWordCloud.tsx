@@ -5,6 +5,7 @@ import React from 'react'
 /*import D3WordCloud from 'react-d3-cloud'*/ // This is  causing a Reference Error: documnet is not defined
                                           // Used dynamic import to fix this                              
 import dynamic from 'next/dynamic'
+import { useRouter } from 'next/navigation'
 
 const D3WordCloud = dynamic(
   () => import('react-d3-cloud'),
@@ -12,27 +13,16 @@ const D3WordCloud = dynamic(
     loading: () => <p>Loading...</p>}
 )
 
-type Props = {}
+type Props = {
+    formattedTopics: {text:string, value:number}[]
+}
 
-const data = [
-    {
-        text: 'React',
-        value: 7
-    },
-    {
-        text: 'John',
-        value: 14
-    },
-    {
-        text: 'Susie',
-        value: 4
-    },
-]
 
 const fontSizeMapper = (word: any) => Math.log2(word.value) * 5 + 16
 
-const CustomWordCloud = (props: Props) => {
+const CustomWordCloud = ({formattedTopics}: Props) => {
     const theme = useTheme()
+    const router = useRouter()
   return (
     <>
     <D3WordCloud 
@@ -42,7 +32,10 @@ const CustomWordCloud = (props: Props) => {
     rotate={0}
     padding={10}
     fill={theme.theme =='dark' ?'white' :'dark'}
-    data={data}
+    onWordClick={(event, word) => {
+        router.push(`/quiz?topic=${word.text}`)
+    }}
+    data={formattedTopics}
     />
     </>
   )

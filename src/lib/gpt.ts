@@ -34,7 +34,7 @@ export async function strict_output(
       list_output && "an array of objects in"
     } the following in json format: ${JSON.stringify(
       output_format
-    )}. \nDo not put quotation marks or escape character \\ in the output fields.`;
+    )}. \nDo not put quotation marks or escape character \\ in the output fields. \nFor apostrophes please use this character instead in the JSON string: ''. For example if you want to output the string I'm, you should output I''m in the JSON.\n`;
  
     if (list_output) {
       output_format_prompt += `\nIf output field is a list, classify output into the best element of the list.`;
@@ -64,10 +64,11 @@ export async function strict_output(
     });
  
     let res: string =
-      response.data.choices[0].message?.content?.replace(/'/g, '"') ?? "";
+      response.data.choices[0].message?.content?.replace(/'/g, '\'') ?? "";
  
     // ensure that we don't replace away apostrophes in text
-    res = res.replace(/(\w)"(\w)/g, "$1'$2");
+    res = res.replace(/(\w)"(\w)/g, "$1\'$2");
+    res = res.replace(/(\w)""(\w)/g, "$1\'$2");
  
     if (verbose) {
       console.log(

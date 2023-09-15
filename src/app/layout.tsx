@@ -22,10 +22,12 @@ export default function RootLayout({
     <html lang="en">
       <body className={
         cn(inter.className, "antialiased, min-h-screen, pt-16")
-      }>
+      }
+      suppressHydrationWarning={true}>
         <Providers>
         <Navbar />
         {children}
+
         <Toaster />
         </Providers>
       </body>
