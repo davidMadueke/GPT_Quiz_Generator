@@ -5,3 +5,7 @@ An interactive Quiz Web app that users generate, share and save quizzes by utili
 
 - [ ] Upgrade to OpenAI SDK v4
 - [ ] Figure using absolute centering with the dropdown shadcn ui component
+- [ ] Work on redeploying Vercel build and Planet Scale DB
+
+### NOTE
+As of 24 OCT 2023, the website link does not work, I am currently working on fixing the vercel and planet scale deployment.
